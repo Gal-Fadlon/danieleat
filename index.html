@@ -134,11 +134,11 @@
   /* ---------- stat tiles ---------- */
   .stats {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 16px;
     margin: 40px 0 56px;
   }
-  @media (max-width: 820px) { .stats { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 640px) { .stats { grid-template-columns: 1fr; } }
   .tile {
     background: var(--surface);
     border: 1px solid var(--ring);
@@ -149,6 +149,9 @@
   .tile .label { font-size: 13.5px; font-weight: 500; color: var(--muted); }
   .tile .value { font-size: 30px; font-weight: 800; letter-spacing: -0.01em; margin-top: 2px; }
   .tile .sub   { font-size: 13px; color: var(--ink-2); margin-top: 2px; }
+  .tile .sub.brands { display: flex; flex-wrap: wrap; column-gap: 6px; row-gap: 2px; }
+  .tile .sub.brands span { white-space: nowrap; unicode-bidi: isolate; }
+  .tile .sub.brands span + span::before { content: "· "; color: var(--muted); }
   .tile.hero-tile .value {
     font-size: 34px;
     background: var(--ig);
@@ -259,6 +262,7 @@
   }
   .col {
     flex: 1;
+    min-width: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -282,6 +286,12 @@
     margin-bottom: 4px;
     font-variant-numeric: tabular-nums;
     white-space: nowrap;
+  }
+  .chart.dense .vlabel { font-size: 10px; letter-spacing: -0.02em; }
+  @media (max-width: 640px) {
+    .chart.dense .vlabel { font-size: 9px; }
+    .chart.dense .vlabel .cur { display: none; }
+    .chart.dense .col:nth-child(even) .vlabel { margin-bottom: 20px; }
   }
   .col.paused .pause-mark {
     width: 100%; max-width: 24px; height: 26px;
@@ -312,7 +322,7 @@
   .col:hover::after { opacity: 1; }
   .xlabels { display: flex; gap: 10px; margin-top: 7px; }
   .xlabels span {
-    flex: 1; text-align: center;
+    flex: 1; min-width: 0; text-align: center;
     font-size: 11.5px; color: var(--muted);
     white-space: nowrap; overflow: visible;
   }
@@ -376,22 +386,12 @@
     <div class="tile hero-tile">
       <div class="label">סה״כ מכר מצטבר</div>
       <div class="value">₪1,658,092</div>
-      <div class="sub">על פני 6 מותגים</div>
-    </div>
-    <div class="tile">
-      <div class="label">המותג המוביל</div>
-      <div class="value">iHerb</div>
-      <div class="sub">₪507,790 מצטבר</div>
-    </div>
-    <div class="tile">
-      <div class="label">חודש השיא</div>
-      <div class="value">₪160,371</div>
-      <div class="sub">כרמלה · יוני 2026</div>
+      <div class="sub">על פני הרבעון</div>
     </div>
     <div class="tile">
       <div class="label">מותגים פעילים</div>
       <div class="value">6</div>
-      <div class="sub">כרמלה · iHerb · פנדה ועוד</div>
+      <div class="sub brands"><span>כרמלה</span><span>iHerb</span><span>פנדה</span><span>לופה</span><span>Under the Rock</span><span>4Chef</span></div>
     </div>
   </section>
 
@@ -449,13 +449,13 @@
         </div>
         <div class="card-total"><div class="t">₪507,790</div><div class="l">סה״כ</div></div>
       </div>
-      <div class="chart">
-        <div class="col" data-tip="פברואר 2026 · ₪112,380"><div class="bar" style="height:76.2%"></div></div>
+      <div class="chart dense">
+        <div class="col" data-tip="פברואר 2026 · ₪112,380"><div class="vlabel"><span class="cur">₪</span>112,380</div><div class="bar" style="height:76.2%"></div></div>
         <div class="col paused" data-tip="מרץ 2026 · הפעילות הופסקה"><div class="pause-mark"></div></div>
         <div class="col paused" data-tip="אפריל 2026 · הפעילות הופסקה"><div class="pause-mark"></div></div>
-        <div class="col" data-tip="מאי 2026 · ₪131,930"><div class="bar" style="height:89.5%"></div></div>
-        <div class="col" data-tip="יוני 2026 · ₪116,050"><div class="bar" style="height:78.7%"></div></div>
-        <div class="col" data-tip="יולי 2026 · ₪147,430"><div class="vlabel">₪147,430</div><div class="bar" style="height:100%"></div></div>
+        <div class="col" data-tip="מאי 2026 · ₪131,930"><div class="vlabel"><span class="cur">₪</span>131,930</div><div class="bar" style="height:89.5%"></div></div>
+        <div class="col" data-tip="יוני 2026 · ₪116,050"><div class="vlabel"><span class="cur">₪</span>116,050</div><div class="bar" style="height:78.7%"></div></div>
+        <div class="col" data-tip="יולי 2026 · ₪147,430"><div class="vlabel"><span class="cur">₪</span>147,430</div><div class="bar" style="height:100%"></div></div>
       </div>
       <div class="xlabels"><span>פבר׳</span><span>מרץ</span><span>אפר׳</span><span>מאי</span><span>יוני</span><span>יולי</span></div>
       <div class="note">מרץ–אפריל 2026: הפעילות הופסקה בעקבות מלחמת ״שאגת הארי״</div>
@@ -470,14 +470,14 @@
         </div>
         <div class="card-total"><div class="t">₪507,179</div><div class="l">סה״כ</div></div>
       </div>
-      <div class="chart">
-        <div class="col" data-tip="ינואר 2026 · ₪45,294"><div class="bar" style="height:41.3%"></div></div>
-        <div class="col" data-tip="פברואר 2026 · ₪53,805"><div class="bar" style="height:49%"></div></div>
-        <div class="col" data-tip="מרץ 2026 · ₪79,991"><div class="bar" style="height:72.9%"></div></div>
-        <div class="col" data-tip="אפריל 2026 · ₪74,250"><div class="bar" style="height:67.7%"></div></div>
-        <div class="col" data-tip="מאי 2026 · ₪95,818"><div class="bar" style="height:87.3%"></div></div>
-        <div class="col" data-tip="יוני 2026 · ₪48,296"><div class="bar" style="height:44%"></div></div>
-        <div class="col" data-tip="יולי 2026 · ₪109,725"><div class="vlabel">₪109,725</div><div class="bar" style="height:100%"></div></div>
+      <div class="chart dense">
+        <div class="col" data-tip="ינואר 2026 · ₪45,294"><div class="vlabel"><span class="cur">₪</span>45,294</div><div class="bar" style="height:41.3%"></div></div>
+        <div class="col" data-tip="פברואר 2026 · ₪53,805"><div class="vlabel"><span class="cur">₪</span>53,805</div><div class="bar" style="height:49%"></div></div>
+        <div class="col" data-tip="מרץ 2026 · ₪79,991"><div class="vlabel"><span class="cur">₪</span>79,991</div><div class="bar" style="height:72.9%"></div></div>
+        <div class="col" data-tip="אפריל 2026 · ₪74,250"><div class="vlabel"><span class="cur">₪</span>74,250</div><div class="bar" style="height:67.7%"></div></div>
+        <div class="col" data-tip="מאי 2026 · ₪95,818"><div class="vlabel"><span class="cur">₪</span>95,818</div><div class="bar" style="height:87.3%"></div></div>
+        <div class="col" data-tip="יוני 2026 · ₪48,296"><div class="vlabel"><span class="cur">₪</span>48,296</div><div class="bar" style="height:44%"></div></div>
+        <div class="col" data-tip="יולי 2026 · ₪109,725"><div class="vlabel"><span class="cur">₪</span>109,725</div><div class="bar" style="height:100%"></div></div>
       </div>
       <div class="xlabels"><span>ינו׳</span><span>פבר׳</span><span>מרץ</span><span>אפר׳</span><span>מאי</span><span>יוני</span><span>יולי</span></div>
     </article>
